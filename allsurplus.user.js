@@ -1,14 +1,14 @@
 // ==UserScript==
 // @name         allsurplus_helpers
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.1
 // @description  Helpers for using allsurplus.com
 // @author       Huy Nguyen
 // @match        https://www.allsurplus.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=allsurplus.com
 // @grant        none
-// @updateURL    https://github.com/huynggg/tampermonkey/allsurplus.user.js
-// @downloadURL  https://github.com/huynggg/tampermonkey/allsurplus.user.js
+// @updateURL    https://github.com/huynggg/tampermonkey/raw/refs/heads/main/allsurplus.user.js
+// @downloadURL  https://github.com/huynggg/tampermonkey/raw/refs/heads/main/allsurplus.user.js
 // ==/UserScript==
 
 (function() {
