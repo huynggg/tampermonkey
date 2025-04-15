@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         allsurplus_helpers
 // @namespace    http://tampermonkey.net/
-// @version      1.1
+// @version      1.1.1
 // @description  Helpers for using allsurplus.com
 // @author       Huy Nguyen
 // @match        https://www.allsurplus.com/*
@@ -29,7 +29,7 @@
 			googleBtn.textContent = 'Google';
 			googleBtn.className = 'custom-google-btn';
 			googleBtn.style.marginTop = '10px';
-			googleBtn.style.marginLeft = '5px';
+			// googleBtn.style.marginLeft = '5px';
 			googleBtn.style.display = 'block';
 			googleBtn.onclick = () => {
 				window.open(googleSearchUrl, '_blank');
