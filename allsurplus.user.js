@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         allsurplus_helpers
 // @namespace    http://tampermonkey.net/
-// @version      1.1.2
+// @version      1.1.3
 // @description  Helpers for using allsurplus.com
 // @author       Huy Nguyen
 // @match        https://www.allsurplus.com/*
@@ -56,8 +56,6 @@
 			ebayBtn.onclick = () => {
 				window.open(ebaySearchUrl, '_blank');
 			};
-
-
 
 			container.appendChild(googleBtn);
 			container.appendChild(amazonBtn);
