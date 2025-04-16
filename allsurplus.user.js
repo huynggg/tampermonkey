@@ -1,67 +1,97 @@
 // ==UserScript==
 // @name         allsurplus_helpers
 // @namespace    http://tampermonkey.net/
-// @version      1.1.3
+// @version      1.2
 // @description  Helpers for using allsurplus.com
 // @author       Huy Nguyen
 // @match        https://www.allsurplus.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=allsurplus.com
-// @grant        none
+// @grant        GM_addStyle
 // @updateURL    https://github.com/huynggg/tampermonkey/raw/refs/heads/main/allsurplus.user.js
 // @downloadURL  https://github.com/huynggg/tampermonkey/raw/refs/heads/main/allsurplus.user.js
 // ==/UserScript==
 
 (function() {
 	'use strict';
+	GM_addStyle(`
+    button:hover {
+            background-color: #e0e0e0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transform: scale(1.03);
+        }
+
+    button {
+         font-size: 26px;
+         padding: 0px 5px;
+         margin: 10px;
+         width: 50px;
+         height: 50px;
+       }
+
+       div.card-body > div.row {
+         justify-content: center;
+         align-items: center;
+       }
+	
+	.btn-container {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	
+}
+    `);
 
 	const observer = new MutationObserver(() => {
+		const link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css';
+		document.head.appendChild(link);
 		const containers = document.querySelectorAll('div.card-body > div.row');
+		const btnContainer = document.createElement('div');
+		btnContainer.className = 'btn-container';
+		containers.appendChild(btnContainer);
 
 		containers.forEach((container, index) => {
 			// Skip if the button is already added
 			if (container.querySelector('.custom-google-btn')) return;
+			if (container.querySelector('.custom-amazon-btn')) return;
+			if (container.querySelector('.custom-ebay-btn')) return;
 
 			const title = container.parentElement.querySelector('.card-title > .link-click').getAttribute('title');
 			//console.log(title);
 
 			const googleSearchUrl = "https://www.google.com/search?q=" + encodeURIComponent(title);
+			//onst googleSearchUrl = "https://www.google.com/search?tbm=isch&q=" + encodeURIComponent(title); // Shopping page
+			//onst googleSearchUrl = "https://www.google.com/search?tbm=shop&q=" + encodeURIComponent(title); // Image search page
 			const googleBtn = document.createElement('button');
-			googleBtn.textContent = 'Google';
+			googleBtn.innerHTML = '<i class="fab fa-google"></i>';
 			googleBtn.className = 'custom-google-btn';
-			googleBtn.style.marginTop = '10px';
-			// googleBtn.style.marginLeft = '5px';
-			googleBtn.style.display = 'block';
 			googleBtn.onclick = () => {
 				window.open(googleSearchUrl, '_blank');
 			};
 
 			const amazonSearchUrl = "https://www.amazon.com/s?k=" + encodeURIComponent(title);
 			const amazonBtn = document.createElement('button');
-			amazonBtn.textContent = 'Amazon';
-			amazonBtn.className = 'custom-google-btn';
-			amazonBtn.style.marginTop = '10px';
-			amazonBtn.style.marginLeft = '5px';
-			amazonBtn.style.display = 'block';
+			amazonBtn.innerHTML = '<i class="fab fa-amazon"></i>';
+			amazonBtn.className = 'custom-amazon-btn';
 			amazonBtn.onclick = () => {
 				window.open(amazonSearchUrl, '_blank');
 			};
 
 			const ebaySearchUrl = "https://www.ebay.com/sch/i.html?_nkw=" + encodeURIComponent(title);
 			const ebayBtn = document.createElement('button');
-			ebayBtn.textContent = 'eBay';
-			ebayBtn.className = 'custom-google-btn';
-			ebayBtn.style.marginTop = '10px';
-			ebayBtn.style.marginLeft = '5px';
-			ebayBtn.style.display = 'block';
+			ebayBtn.innerHTML = '<i class="fab fa-ebay"></i>';
+			ebayBtn.className = 'custom-ebay-btn';
 			ebayBtn.onclick = () => {
 				window.open(ebaySearchUrl, '_blank');
 			};
 
-			container.appendChild(googleBtn);
-			container.appendChild(amazonBtn);
-			container.appendChild(ebayBtn);
+			btnContainer.appendChild(googleBtn);
+			btnContainer.appendChild(amazonBtn);
+			btnContainer.appendChild(ebayBtn);
 		});
 	});
 
 	observer.observe(document.body, { childList: true, subtree: true });
 })();
+
