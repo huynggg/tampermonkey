@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         allsurplus_helpers
 // @namespace    http://tampermonkey.net/
-// @version      1.4.2
+// @version      1.5
 // @description  Helpers for using allsurplus.com
 // @author       Huy Nguyen
 // @match        https://www.allsurplus.com/*
@@ -21,11 +21,10 @@
         }
 
     button {
-         font-size: 26px;
          padding: 0px 5px;
          margin: 10px;
-         width: 50px;
-         height: 50px;
+         width: 45px;
+         height: 45px;
        }
 
        div.card-body > div.row {
@@ -40,10 +39,6 @@
 `);
 
 	const observer = new MutationObserver(() => {
-		const link = document.createElement('link');
-		link.rel = 'stylesheet';
-		link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css';
-		document.head.appendChild(link);
 		const containers = document.querySelectorAll('div.card-search');
 
 		containers.forEach((container, index) => {
@@ -61,13 +56,13 @@
 			const makeBtn = (cls, icon, url) => {
 				const btn = document.createElement('button');
 				btn.className = cls;
-				btn.innerHTML = `<i class="${icon}"></i>`;
+				btn.innerHTML = `<img src="${icon}">`;
 				btn.onclick = () => window.open(url, '_blank');
 				return btn;
 			};
-			const googleBtn = makeBtn('custom-google-btn', 'fab fa-google', `https://www.google.com/search?q=${encodeURIComponent(title)}`);
-			const amazonBtn = makeBtn('custom-amazon-btn', 'fab fa-amazon', `https://www.amazon.com/s?k=${encodeURIComponent(title)}`);
-			const ebayBtn = makeBtn('custom-ebay-btn', 'fab fa-ebay', `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(title)}`);
+			const googleBtn = makeBtn('custom-google-btn', 'https://cdn.simpleicons.org/google/4285F4', `https://www.google.com/search?q=${encodeURIComponent(title)}`);
+			const amazonBtn = makeBtn('custom-amazon-btn', 'https://cdn.simpleicons.org/amazon/FF9900', `https://www.amazon.com/s?k=${encodeURIComponent(title)}`);
+			const ebayBtn = makeBtn('custom-ebay-btn', 'https://cdn.simpleicons.org/ebay/E53238', `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(title)}`);
 
 			btnContainer.appendChild(googleBtn);
 			btnContainer.appendChild(amazonBtn);
