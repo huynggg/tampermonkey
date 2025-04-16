@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         allsurplus_helpers
 // @namespace    http://tampermonkey.net/
-// @version      1.2.1
+// @version      1.3
 // @description  Helpers for using allsurplus.com
 // @author       Huy Nguyen
 // @match        https://www.allsurplus.com/*
@@ -56,7 +56,11 @@
 			btnContainer.className = 'btn-container';
 			container.appendChild(btnContainer);
 
-			const title = container.parentElement.querySelector('.card-title > .link-click').getAttribute('title');
+			let title = container.parentElement.querySelector('.card-title > .link-click').getAttribute('title');
+			if (title === null) {
+				title = container.parentElement.querySelector('.card-title > .link-click').textContent;
+			}
+
 			//console.log(title);
 
 			const googleSearchUrl = "https://www.google.com/search?q=" + encodeURIComponent(title);
@@ -93,5 +97,6 @@
 
 	observer.observe(document.body, { childList: true, subtree: true });
 })();
+
 
 
