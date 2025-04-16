@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         allsurplus_helpers
 // @namespace    http://tampermonkey.net/
-// @version      1.2
+// @version      1.2.1
 // @description  Helpers for using allsurplus.com
 // @author       Huy Nguyen
 // @match        https://www.allsurplus.com/*
@@ -30,16 +30,14 @@
 
        div.card-body > div.row {
          justify-content: center;
-         align-items: center;
        }
 	
 	.btn-container {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-	
-}
-    `);
+	}
+`);
 
 	const observer = new MutationObserver(() => {
 		const link = document.createElement('link');
@@ -47,15 +45,16 @@
 		link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css';
 		document.head.appendChild(link);
 		const containers = document.querySelectorAll('div.card-body > div.row');
-		const btnContainer = document.createElement('div');
-		btnContainer.className = 'btn-container';
-		containers.appendChild(btnContainer);
 
 		containers.forEach((container, index) => {
 			// Skip if the button is already added
 			if (container.querySelector('.custom-google-btn')) return;
 			if (container.querySelector('.custom-amazon-btn')) return;
 			if (container.querySelector('.custom-ebay-btn')) return;
+
+			const btnContainer = document.createElement('div');
+			btnContainer.className = 'btn-container';
+			container.appendChild(btnContainer);
 
 			const title = container.parentElement.querySelector('.card-title > .link-click').getAttribute('title');
 			//console.log(title);
@@ -94,4 +93,5 @@
 
 	observer.observe(document.body, { childList: true, subtree: true });
 })();
+
 
