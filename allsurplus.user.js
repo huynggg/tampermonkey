@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         allsurplus_helpers
 // @namespace    http://tampermonkey.net/
-// @version      1.4.1
+// @version      1.4.2
 // @description  Helpers for using allsurplus.com
 // @author       Huy Nguyen
 // @match        https://www.allsurplus.com/*
@@ -68,6 +68,8 @@
 				btn.onclick = () => window.open(url, '_blank');
 				return btn;
 			};
+			//const googleSearchUrl = "https://www.google.com/search?tbm=isch&q=" + encodeURIComponent(title); // Image
+			//const googleSearchUrl = "https://www.google.com/search?tbm=shop&q=" + encodeURIComponent(title); // Shopping
 			const googleBtn = makeBtn('custom-google-btn', 'fab fa-google', `https://www.google.com/search?q=${encodeURIComponent(title)}`);
 			const amazonBtn = makeBtn('custom-amazon-btn', 'fab fa-amazon', `https://www.amazon.com/s?k=${encodeURIComponent(title)}`);
 			const ebayBtn = makeBtn('custom-ebay-btn', 'fab fa-ebay', `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(title)}`);
