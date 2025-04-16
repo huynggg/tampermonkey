@@ -60,8 +60,8 @@
 			//console.log(title);
 
 			const googleSearchUrl = "https://www.google.com/search?q=" + encodeURIComponent(title);
-			//onst googleSearchUrl = "https://www.google.com/search?tbm=isch&q=" + encodeURIComponent(title); // Shopping page
-			//onst googleSearchUrl = "https://www.google.com/search?tbm=shop&q=" + encodeURIComponent(title); // Image search page
+			//const googleSearchUrl = "https://www.google.com/search?tbm=isch&q=" + encodeURIComponent(title); // Shopping page
+			//const googleSearchUrl = "https://www.google.com/search?tbm=shop&q=" + encodeURIComponent(title); // Image search page
 			const googleBtn = document.createElement('button');
 			googleBtn.innerHTML = '<i class="fab fa-google"></i>';
 			googleBtn.className = 'custom-google-btn';
