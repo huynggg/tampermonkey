@@ -31,7 +31,7 @@
        div.card-body > div.row {
          justify-content: center;
        }
-	
+
 	.btn-container {
 		display: flex;
 		align-items: center;
@@ -44,7 +44,7 @@
 		link.rel = 'stylesheet';
 		link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css';
 		document.head.appendChild(link);
-		const containers = document.querySelectorAll('div.card-body > div.row');
+		const containers = document.querySelectorAll('div.card-search');
 
 		containers.forEach((container, index) => {
 			// Skip if the button is already added
@@ -54,12 +54,9 @@
 
 			const btnContainer = document.createElement('div');
 			btnContainer.className = 'btn-container';
-			container.appendChild(btnContainer);
 
-			let title = container.parentElement.querySelector('.card-title > .link-click').getAttribute('title');
-			if (title === null) {
-				title = container.parentElement.querySelector('.card-title > .link-click').textContent;
-			}
+			const containerBody = container.querySelector('div.card-body > div.row');
+			let title = container.querySelector('div.card > a').getAttribute('title');
 
 			const makeBtn = (cls, icon, url) => {
 				const btn = document.createElement('button');
@@ -68,8 +65,6 @@
 				btn.onclick = () => window.open(url, '_blank');
 				return btn;
 			};
-			//const googleSearchUrl = "https://www.google.com/search?tbm=isch&q=" + encodeURIComponent(title); // Image
-			//const googleSearchUrl = "https://www.google.com/search?tbm=shop&q=" + encodeURIComponent(title); // Shopping
 			const googleBtn = makeBtn('custom-google-btn', 'fab fa-google', `https://www.google.com/search?q=${encodeURIComponent(title)}`);
 			const amazonBtn = makeBtn('custom-amazon-btn', 'fab fa-amazon', `https://www.amazon.com/s?k=${encodeURIComponent(title)}`);
 			const ebayBtn = makeBtn('custom-ebay-btn', 'fab fa-ebay', `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(title)}`);
@@ -77,11 +72,13 @@
 			btnContainer.appendChild(googleBtn);
 			btnContainer.appendChild(amazonBtn);
 			btnContainer.appendChild(ebayBtn);
+			containerBody.appendChild(btnContainer);
 		});
 	});
 
 	observer.observe(document.body, { childList: true, subtree: true });
 })();
+
 
 
 
