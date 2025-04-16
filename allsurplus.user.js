@@ -61,33 +61,43 @@
 				title = container.parentElement.querySelector('.card-title > .link-click').textContent;
 			}
 
-			//console.log(title);
-
-			const googleSearchUrl = "https://www.google.com/search?q=" + encodeURIComponent(title);
-			//const googleSearchUrl = "https://www.google.com/search?tbm=isch&q=" + encodeURIComponent(title); // Shopping page
-			//const googleSearchUrl = "https://www.google.com/search?tbm=shop&q=" + encodeURIComponent(title); // Image search page
-			const googleBtn = document.createElement('button');
-			googleBtn.innerHTML = '<i class="fab fa-google"></i>';
-			googleBtn.className = 'custom-google-btn';
-			googleBtn.onclick = () => {
-				window.open(googleSearchUrl, '_blank');
+			const makeBtn = (cls, icon, url) => {
+				const btn = document.createElement('button');
+				btn.className = cls;
+				btn.innerHTML = `<i class="${icon}"></i>`;
+				btn.onclick = () => window.open(url, '_blank');
+				return btn;
 			};
+			const googleBtn = makeBtn('custom-google-btn', 'fab fa-google', `https://www.google.com/search?q=${encodeURIComponent(title)}`);
+			const amazonBtn = makeBtn('custom-amazon-btn', 'fab fa-amazon', `https://www.amazon.com/s?k=${encodeURIComponent(title)}`);
+			const ebayBtn = makeBtn('custom-ebay-btn', 'fab fa-ebay', `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(title)}`);
 
-			const amazonSearchUrl = "https://www.amazon.com/s?k=" + encodeURIComponent(title);
-			const amazonBtn = document.createElement('button');
-			amazonBtn.innerHTML = '<i class="fab fa-amazon"></i>';
-			amazonBtn.className = 'custom-amazon-btn';
-			amazonBtn.onclick = () => {
-				window.open(amazonSearchUrl, '_blank');
-			};
 
-			const ebaySearchUrl = "https://www.ebay.com/sch/i.html?_nkw=" + encodeURIComponent(title);
-			const ebayBtn = document.createElement('button');
-			ebayBtn.innerHTML = '<i class="fab fa-ebay"></i>';
-			ebayBtn.className = 'custom-ebay-btn';
-			ebayBtn.onclick = () => {
-				window.open(ebaySearchUrl, '_blank');
-			};
+			// const googleSearchUrl = "https://www.google.com/search?q=" + encodeURIComponent(title);
+			// //const googleSearchUrl = "https://www.google.com/search?tbm=isch&q=" + encodeURIComponent(title); // Shopping page
+			// //const googleSearchUrl = "https://www.google.com/search?tbm=shop&q=" + encodeURIComponent(title); // Image search page
+			// const googleBtn = document.createElement('button');
+			// googleBtn.innerHTML = '<i class="fab fa-google"></i>';
+			// googleBtn.className = 'custom-google-btn';
+			// googleBtn.onclick = () => {
+			// 	window.open(googleSearchUrl, '_blank');
+			// };
+			//
+			// const amazonSearchUrl = "https://www.amazon.com/s?k=" + encodeURIComponent(title);
+			// const amazonBtn = document.createElement('button');
+			// amazonBtn.innerHTML = '<i class="fab fa-amazon"></i>';
+			// amazonBtn.className = 'custom-amazon-btn';
+			// amazonBtn.onclick = () => {
+			// 	window.open(amazonSearchUrl, '_blank');
+			// };
+			//
+			// const ebaySearchUrl = "https://www.ebay.com/sch/i.html?_nkw=" + encodeURIComponent(title);
+			// const ebayBtn = document.createElement('button');
+			// ebayBtn.innerHTML = '<i class="fab fa-ebay"></i>';
+			// ebayBtn.className = 'custom-ebay-btn';
+			// ebayBtn.onclick = () => {
+			// 	window.open(ebaySearchUrl, '_blank');
+			// };
 
 			btnContainer.appendChild(googleBtn);
 			btnContainer.appendChild(amazonBtn);
