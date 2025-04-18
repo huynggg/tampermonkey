@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         allsurplus_helpers
 // @namespace    http://tampermonkey.net/
-// @version      1.6
+// @version      1.7
 // @description  Helpers for using allsurplus.com
 // @author       Huy Nguyen
 // @match        https://www.allsurplus.com/*
@@ -35,7 +35,7 @@
 	.btn-container {
 		display: flex;
 		align-items: center;
-		justify-content: center;
+		justify-content: left;
 	}
 
     .custom-google-btn i {
@@ -49,7 +49,15 @@
 	}
 `);
 
+	const makeBtn = (cls, icon, url) => {
+		const btn = document.createElement('button');
+		btn.className = cls;
+		btn.innerHTML = `<i class="${icon}"></i>`;
+		btn.onclick = () => window.open(url, '_blank');
+		return btn;
+	};
 	const observer = new MutationObserver(() => {
+		// For items on general pages
 		const containers = document.querySelectorAll('div.card-search');
 		containers.forEach((container, index) => {
 			// Skip if the button is already added
@@ -63,26 +71,42 @@
 			const containerBody = container.querySelector('div.card-body > div.row');
 			let title = container.querySelector('div.card > a').getAttribute('title');
 
-			const makeBtn = (cls, icon, url) => {
-				const btn = document.createElement('button');
-				btn.className = cls;
-				btn.innerHTML = `<i class="${icon}"></i>`;
-				btn.onclick = () => window.open(url, '_blank');
-				return btn;
-			};
-			const googleBtn = makeBtn('custom-google-btn', 'fab fa-google', `https://www.google.com/search?q=${encodeURIComponent(title)}`);
-			const amazonBtn = makeBtn('custom-amazon-btn', 'fab fa-amazon', `https://www.amazon.com/s?k=${encodeURIComponent(title)}`);
-			const ebayBtn = makeBtn('custom-ebay-btn', 'fab fa-ebay', `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(title)}`);
-
-			btnContainer.appendChild(googleBtn);
-			btnContainer.appendChild(amazonBtn);
-			btnContainer.appendChild(ebayBtn);
+			btnContainer.appendChild(makeBtn('custom-google-btn', 'fab fa-google', `https://www.google.com/search?q=${encodeURIComponent(title)}`));
+			btnContainer.appendChild(makeBtn('custom-amazon-btn', 'fab fa-amazon', `https://www.amazon.com/s?k=${encodeURIComponent(title)}`));
+			btnContainer.appendChild(makeBtn('custom-ebay-btn', 'fab fa-ebay', `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(title)}`));
 			containerBody.appendChild(btnContainer);
 		});
 	});
 
 	observer.observe(document.body, { childList: true, subtree: true });
+
+	// For items in detail page
+	const checkExist = setInterval(() => {
+		const productTitleElement = document.querySelector('.product-title');
+		if (productTitleElement) {
+			clearInterval(checkExist);
+			const productTitle = productTitleElement.textContent;
+
+			const btnContainerTitle = document.createElement('div');
+			btnContainerTitle.className = 'btn-container';
+			const btnContainerDesc = document.createElement('div');
+			btnContainerDesc.className = 'btn-container';
+
+			btnContainerTitle.appendChild(makeBtn('custom-google-btn', 'fab fa-google', `https://www.google.com/search?q=${encodeURIComponent(productTitle)}`));
+			btnContainerTitle.appendChild(makeBtn('custom-amazon-btn', 'fab fa-amazon', `https://www.amazon.com/s?k=${encodeURIComponent(productTitle)}`));
+			btnContainerTitle.appendChild(makeBtn('custom-ebay-btn', 'fab fa-ebay', `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(productTitle)}`));
+			btnContainerDesc.appendChild(makeBtn('custom-google-btn', 'fab fa-google', `https://www.google.com/search?q=${encodeURIComponent(productTitle)}`));
+			btnContainerDesc.appendChild(makeBtn('custom-amazon-btn', 'fab fa-amazon', `https://www.amazon.com/s?k=${encodeURIComponent(productTitle)}`));
+			btnContainerDesc.appendChild(makeBtn('custom-ebay-btn', 'fab fa-ebay', `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(productTitle)}`));
+			// productTitleElement.parentNode.appendChild(googleBtnDetail);
+			const descriptionElement = document.querySelector('.description-body');
+			descriptionElement.appendChild(btnContainerDesc);
+			productTitleElement.appendChild(btnContainerTitle);
+		}
+	}, 500); // check every 500ms
+
 })();
+
 
 
 
