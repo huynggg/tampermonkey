@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         allsurplus_helpers
 // @namespace    http://tampermonkey.net/
-// @version      1.7.3
+// @version      1.7.4
 // @description  Helpers for using allsurplus.com
 // @author       Huy Nguyen
 // @match        https://www.allsurplus.com/*
@@ -70,6 +70,9 @@
 
 			const containerBody = container.querySelector('div.card-body > div.row');
 			let title = container.querySelector('div.card > a').getAttribute('title');
+			if (title === null) {
+				title = container.querySelector('.card-title > span').getAttribute('title');
+			}
 
 			btnContainer.appendChild(makeBtn('custom-google-btn', 'fab fa-google', `https://www.google.com/search?q=${encodeURIComponent(title)}`));
 			btnContainer.appendChild(makeBtn('custom-amazon-btn', 'fab fa-amazon', `https://www.amazon.com/s?k=${encodeURIComponent(title)}`));
@@ -106,10 +109,3 @@
 	}, 500); // check every 500ms
 
 })();
-
-
-
-
-
-
-
