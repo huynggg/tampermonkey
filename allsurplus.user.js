@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         allsurplus_helpers
 // @namespace    http://tampermonkey.net/
-// @version      1.7.1
+// @version      1.7.2
 // @description  Helpers for using allsurplus.com
 // @author       Huy Nguyen
 // @match        https://www.allsurplus.com/*
@@ -20,7 +20,7 @@
             transform: scale(1.03);
         }
 
-    button {
+    .custom-btn {
          font-size: 26px;
          padding: 0px 5px;
          margin: 10px;
@@ -51,7 +51,7 @@
 
 	const makeBtn = (cls, icon, url) => {
 		const btn = document.createElement('button');
-		btn.className = cls;
+		btn.className = `${cls} custom-btn`;
 		btn.innerHTML = `<i class="${icon}"></i>`;
 		btn.onclick = () => window.open(url, '_blank');
 		return btn;
@@ -106,6 +106,7 @@
 	}, 500); // check every 500ms
 
 })();
+
 
 
 
