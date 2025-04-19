@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         allsurplus_helpers
 // @namespace    http://tampermonkey.net/
-// @version      1.7.6
+// @version      1.8
 // @description  Helpers for using allsurplus.com
 // @author       Huy Nguyen
 // @match        https://www.allsurplus.com/*
@@ -57,28 +57,27 @@
 		return btn;
 	};
 	const observer = new MutationObserver(() => {
-		// For items on general pages
-		const containers = document.querySelectorAll('div.card-search');
-		containers.forEach((container, index) => {
-			// Skip if the button is already added
-			if (container.querySelector('.custom-google-btn')) return;
-			if (container.querySelector('.custom-amazon-btn')) return;
-			if (container.querySelector('.custom-ebay-btn')) return;
+		if (window.location.pathname.includes("account")) {
+			// For items on general pages
+			const containers = document.querySelectorAll('p.card-title');
+			containers.forEach((container, index) => {
+				// Skip if the button is already added
+				if (container.querySelector('.custom-google-btn')) return;
+				if (container.querySelector('.custom-amazon-btn')) return;
+				if (container.querySelector('.custom-ebay-btn')) return;
 
-			const btnContainer = document.createElement('div');
-			btnContainer.className = 'btn-container';
+				const btnContainer = document.createElement('div');
+				btnContainer.className = 'btn-container';
 
-			const containerBody = container.querySelector('div.card-body > div.row');
-			let title = container.querySelector('div.card > a').getAttribute('title');
-			if (title === null) {
-				title = container.querySelector('.card-title > span').getAttribute('title');
-			}
+				let title = container.querySelector('a').textContent;
 
-			btnContainer.appendChild(makeBtn('custom-google-btn', 'fab fa-google', `https://www.google.com/search?q=${encodeURIComponent(title)}`));
-			btnContainer.appendChild(makeBtn('custom-amazon-btn', 'fab fa-amazon', `https://www.amazon.com/s?k=${encodeURIComponent(title)}`));
-			btnContainer.appendChild(makeBtn('custom-ebay-btn', 'fab fa-ebay', `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(title)}&LH_Sold=1`));
-			containerBody.appendChild(btnContainer);
-		});
+				btnContainer.appendChild(makeBtn('custom-google-btn', 'fab fa-google', `https://www.google.com/search?q=${encodeURIComponent(title)}`));
+				btnContainer.appendChild(makeBtn('custom-amazon-btn', 'fab fa-amazon', `https://www.amazon.com/s?k=${encodeURIComponent(title)}`));
+				btnContainer.appendChild(makeBtn('custom-ebay-btn', 'fab fa-ebay', `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(title)}&LH_Sold=1`));
+				container.appendChild(btnContainer);
+			});
+		}
+
 	});
 
 	// Utility to re-run your logic when navigation happens
@@ -123,4 +122,5 @@
 	}).observe(document.body, { childList: true, subtree: true });
 
 })();
+
 
