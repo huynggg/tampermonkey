@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         allsurplus_helpers
 // @namespace    http://tampermonkey.net/
-// @version      1.7.4
+// @version      1.7.5
 // @description  Helpers for using allsurplus.com
 // @author       Huy Nguyen
 // @match        https://www.allsurplus.com/*
@@ -81,31 +81,46 @@
 		});
 	});
 
-	observer.observe(document.body, { childList: true, subtree: true });
+	// Utility to re-run your logic when navigation happens
+	function initHelpers() {
+		observer.observe(document.body, { childList: true, subtree: true });
 
-	// For items in detail page
-	const checkExist = setInterval(() => {
-		const productTitleElement = document.querySelector('.product-title');
-		if (productTitleElement) {
-			clearInterval(checkExist);
-			const productTitle = productTitleElement.textContent;
+		const checkExist = setInterval(() => {
+			const productTitleElement = document.querySelector('.product-title');
+			if (productTitleElement && !productTitleElement.querySelector('.custom-google-btn')) {
+				clearInterval(checkExist);
+				const productTitle = productTitleElement.textContent;
 
-			const btnContainerTitle = document.createElement('div');
-			btnContainerTitle.className = 'btn-container';
-			const btnContainerDesc = document.createElement('div');
-			btnContainerDesc.className = 'btn-container';
+				const btnContainerTitle = document.createElement('div');
+				btnContainerTitle.className = 'btn-container';
+				const btnContainerDesc = document.createElement('div');
+				btnContainerDesc.className = 'btn-container';
 
-			btnContainerTitle.appendChild(makeBtn('custom-google-btn', 'fab fa-google', `https://www.google.com/search?q=${encodeURIComponent(productTitle)}`));
-			btnContainerTitle.appendChild(makeBtn('custom-amazon-btn', 'fab fa-amazon', `https://www.amazon.com/s?k=${encodeURIComponent(productTitle)}`));
-			btnContainerTitle.appendChild(makeBtn('custom-ebay-btn', 'fab fa-ebay', `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(productTitle)}&LH_Sold=1`));
-			btnContainerDesc.appendChild(makeBtn('custom-google-btn', 'fab fa-google', `https://www.google.com/search?q=${encodeURIComponent(productTitle)}`));
-			btnContainerDesc.appendChild(makeBtn('custom-amazon-btn', 'fab fa-amazon', `https://www.amazon.com/s?k=${encodeURIComponent(productTitle)}`));
-			btnContainerDesc.appendChild(makeBtn('custom-ebay-btn', 'fab fa-ebay', `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(productTitle)}&LH_Sold=1`));
-			// productTitleElement.parentNode.appendChild(googleBtnDetail);
-			const descriptionElement = document.querySelector('.description-body');
-			descriptionElement.appendChild(btnContainerDesc);
-			productTitleElement.appendChild(btnContainerTitle);
+				btnContainerTitle.appendChild(makeBtn('custom-google-btn', 'fab fa-google', `https://www.google.com/search?q=${encodeURIComponent(productTitle)}`));
+				btnContainerTitle.appendChild(makeBtn('custom-amazon-btn', 'fab fa-amazon', `https://www.amazon.com/s?k=${encodeURIComponent(productTitle)}`));
+				btnContainerTitle.appendChild(makeBtn('custom-ebay-btn', 'fab fa-ebay', `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(productTitle)}&LH_Sold=1`));
+				btnContainerDesc.appendChild(makeBtn('custom-google-btn', 'fab fa-google', `https://www.google.com/search?q=${encodeURIComponent(productTitle)}`));
+				btnContainerDesc.appendChild(makeBtn('custom-amazon-btn', 'fab fa-amazon', `https://www.amazon.com/s?k=${encodeURIComponent(productTitle)}`));
+				btnContainerDesc.appendChild(makeBtn('custom-ebay-btn', 'fab fa-ebay', `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(productTitle)}&LH_Sold=1`));
+
+				const descriptionElement = document.querySelector('.description-body');
+				descriptionElement?.appendChild(btnContainerDesc);
+				productTitleElement?.appendChild(btnContainerTitle);
+			}
+		}, 500);
+	}
+
+	// Call on first page load
+	initHelpers();
+
+	// Watch for SPA-like navigation (URL changes)
+	let lastUrl = location.href;
+	new MutationObserver(() => {
+		if (location.href !== lastUrl) {
+			lastUrl = location.href;
+			initHelpers(); // re-initialize your logic on page change
 		}
-	}, 500); // check every 500ms
+	}).observe(document.body, { childList: true, subtree: true });
 
 })();
+
